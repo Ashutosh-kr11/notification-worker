@@ -1,15 +1,11 @@
 pipeline {
     agent any
     
-    tools {
-        python 'Python3'
-    }
-    
     environment {
-        PROJECT_KEY = 'OT-MICROSERVICES-attendance-api'
-        PROJECT_NAME = 'OT-MICROSERVICES Attendance API'
+        PROJECT_KEY = 'OT-MICROSERVICES-notification-worker'
+        PROJECT_NAME = 'OT-MICROSERVICES Notification Worker'
         SONAR_URL = 'http://localhost:9000'
-        REPO_URL = 'https://github.com/OT-MICROSERVICES/attendance-api.git'
+        REPO_URL = 'https://github.com/OT-MICROSERVICES/notification-worker.git'
     }
     
     stages {
