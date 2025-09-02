@@ -2,11 +2,10 @@ pipeline {
     agent any
     
     environment {
-        PROJECT_KEY = 'OT-MICROSERVICES-notification-worker'
+        PROJECT_KEY = 'OT-MICROSERVICES-Notification-Worker'
         PROJECT_NAME = 'OT-MICROSERVICES Notification Worker'
         SONAR_URL = 'http://localhost:9000'
         REPO_URL = 'https://github.com/OT-MICROSERVICES/notification-worker.git'
-        SONAR_TOKEN = credentials('Sonarqube-token')
     }
     
     stages {
@@ -55,26 +54,33 @@ pipeline {
     
     post {
         always {
-            emailext (
-                subject: "${currentBuild.result ?: 'UNKNOWN'}: SonarQube Analysis for ${PROJECT_NAME}",
-                body: """
-                <html>
-                <body>
-                    <h1>SonarQube Analysis Results</h1>
-                    <p><b>Project:</b> ${PROJECT_NAME}</p>
-                    <p><b>Repository:</b> OT-MICROSERVICES/attendance-api</p>
-                    <p><b>Build Status:</b> ${currentBuild.result ?: 'UNKNOWN'}</p>
-                    <p><b>Quality Gate Status:</b> ${env.QUALITY_GATE_STATUS ?: 'Not Available'}</p>
-                    <p><b>Date & Time:</b> ${new Date().format('yyyy-MM-dd HH:mm:ss', TimeZone.getTimeZone('UTC'))}</p>
-                    <p><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                    <p><b>SonarQube Report:</b> <a href="${env.SONAR_REPORT_URL}">View Detailed Report</a></p>
-                </body>
-                </html>
-                """,
-                to: "ashutosh.devpro@gmail.com",
-                mimeType: 'text/html',
-                attachLog: true
-            )
+            script {
+                // Set safe defaults for any variables that might not be defined
+                def projectName = env.PROJECT_NAME ?: 'Notification Worker'
+                def qualityGateStatus = env.QUALITY_GATE_STATUS ?: 'Not Available'
+                def sonarReportUrl = env.SONAR_REPORT_URL ?: "${SONAR_URL}/dashboard"
+                
+                emailext (
+                    subject: "${currentBuild.result ?: 'UNKNOWN'}: SonarQube Analysis for ${projectName}",
+                    body: """
+                    <html>
+                    <body>
+                        <h1>SonarQube Analysis Results</h1>
+                        <p><b>Project:</b> ${projectName}</p>
+                        <p><b>Repository:</b> OT-MICROSERVICES/notification-worker</p>
+                        <p><b>Build Status:</b> ${currentBuild.result ?: 'UNKNOWN'}</p>
+                        <p><b>Quality Gate Status:</b> ${qualityGateStatus}</p>
+                        <p><b>Date & Time:</b> ${new Date().format('yyyy-MM-dd HH:mm:ss', TimeZone.getTimeZone('UTC'))}</p>
+                        <p><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                        <p><b>SonarQube Report:</b> <a href="${sonarReportUrl}">View Detailed Report</a></p>
+                    </body>
+                    </html>
+                    """,
+                    to: "ashutosh.devpro@gmail.com",
+                    mimeType: 'text/html',
+                    attachLog: true
+                )
+            }
             
             cleanWs()
         }
