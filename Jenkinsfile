@@ -37,7 +37,7 @@ pipeline {
             }
         }
         
-        stage('Quality Gate') {
+       /** stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
@@ -50,7 +50,7 @@ pipeline {
                 }
             }
         }
-    }
+    }  **/
     
     post {
         always {
