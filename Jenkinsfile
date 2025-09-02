@@ -6,7 +6,7 @@ pipeline {
         PROJECT_NAME = 'OT-MICROSERVICES Notification Worker'
         SONAR_URL = 'http://localhost:9000'
         REPO_URL = 'https://github.com/OT-MICROSERVICES/notification-worker.git'
-        SONAR_TOKEN = credentials('Sonarqube-token(notification-frontend)')
+        SONAR_TOKEN = credentials('Sonarqube-token')
     }
     
     stages {
