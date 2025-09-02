@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        PROJECT_KEY = 'OT-MICROSERVICES-notification-worker'
+        PROJECT_KEY = 'OT-MICROSERVICES-Notification-Worker'
         PROJECT_NAME = 'OT-MICROSERVICES Notification Worker'
         SONAR_URL = 'http://localhost:9000'
         REPO_URL = 'https://github.com/OT-MICROSERVICES/notification-worker.git'
